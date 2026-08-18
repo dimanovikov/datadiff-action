@@ -1,0 +1,55 @@
+name: test
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  diff:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gate passes when no fail-on pattern matches
+        uses: ./
+        with:
+          old: test/old.json
+          new: test/new.json
+          fail-on: does.not.exist
+
+      - name: Gate fails on unfiltered changes
+        id: failing
+        continue-on-error: true
+        uses: ./
+        with:
+          old: test/old.json
+          new: test/new.json
+
+      - name: Assert the gate failed
+        shell: bash
+        run: |
+          if [ "${{ steps.failing.outcome }}" != "failure" ]; then
+            echo "::error::expected the unfiltered diff to fail the step"
+            exit 1
+          fi
+
+      - name: Gate fails when fail-on pattern matches
+        id: matched
+        continue-on-error: true
+        uses: ./
+        with:
+          old: test/old.json
+          new: test/new.json
+          fail-on: replicas
+
+      - name: Assert the matched gate failed
+        shell: bash
+        run: |
+          if [ "${{ steps.matched.outcome }}" != "failure" ]; then
+            echo "::error::expected --fail-on replicas to fail the step"
+            exit 1
+          fi
