@@ -1,8 +1,7 @@
-name: datadiff
+name: datadiff semantic diff
 description: >-
-  Semantic diff for structured data files (JSON, YAML, CSV, TOML, XML).
-  Fails the step when data changed — or only when risky paths changed
-  (--fail-on). Exit 0: no (matching) changes; exit 1: changes found.
+  Semantic diff for JSON, YAML, CSV, TOML and XML. Fail CI on any data
+  change or only on risky paths (--fail-on).
 author: cloudroad-io
 branding:
   icon: git-compare
