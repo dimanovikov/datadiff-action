@@ -1,6 +1,6 @@
 # datadiff-action
 
-GitHub Action for [datadiff](https://github.com/cloudroad-io/datadiff) —
+GitHub Action for [datadiff](https://github.com/dimanovikov/datadiff) —
 semantic diff for structured data files (JSON, YAML, CSV, TOML, XML) as a
 CI gate.
 
@@ -17,7 +17,7 @@ Fail the workflow when a config file changed relative to the base branch:
   with:
     fetch-depth: 0
 - name: Diff config against base branch
-  uses: cloudroad-io/datadiff-action@v1
+  uses: dimanovikov/datadiff-action@v1
   with:
     old: ${{ github.workspace }}/config.yaml        # from base, see below
     new: config.yaml
@@ -36,7 +36,7 @@ steps:
     with:
       ref: ${{ github.base_ref }}
       path: base
-  - uses: cloudroad-io/datadiff-action@v1
+  - uses: dimanovikov/datadiff-action@v1
     with:
       old: base/deploy/app.yaml
       new: pr/deploy/app.yaml
